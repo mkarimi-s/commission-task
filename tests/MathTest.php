@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CommissionTask\Tests\Service;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use CommissionTask\Service\Math;

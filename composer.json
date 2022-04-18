@@ -10,7 +10,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "CommissionTask\\Tests\\": "tests"
+            "Tests\\": "tests/"
         }
     },
     "require": {
@@ -27,6 +27,6 @@
         "bin-dir": "bin"
     },
     "scripts": {
-        "phpunit": "phpunit"
+        "phpunit": "./vendor/phpunit/phpunit/phpunit"
     }
 }
