@@ -7,6 +7,7 @@ use CommissionTask\Service\Commission\Clients\PrivateClient;
 use CommissionTask\Service\Commission\Enum\Clients;
 use CommissionTask\Service\Commission\Contracts\CalculateCommissionInterface;
 use CommissionTask\Service\Math;
+use Exception;
 
 class Withdraw implements CalculateCommissionInterface
 {
@@ -16,30 +17,45 @@ class Withdraw implements CalculateCommissionInterface
     private Math $math;
 
     /**
-     * @param Math $math
+     * @var Operation
      */
-    public function __construct(Math $math)
+    private Operation $operation;
+
+    /**
+     * @var array
+     */
+    private array $userWithdrawOperationsHistory;
+
+    /**
+     * @param Math $math
+     * @param Operation $operation
+     * @param array $userWithdrawOperationsHistory
+     */
+    public function __construct(Math $math, Operation $operation, array $userWithdrawOperationsHistory)
     {
         $this->math = $math;
+        $this->operation = $operation;
+        $this->userWithdrawOperationsHistory = $userWithdrawOperationsHistory;
     }
 
     /**
-     * @param string $type
      * @return BusinessClient|PrivateClient
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getClientType(string $type): BusinessClient|PrivateClient
+    public function getClientType(): BusinessClient|PrivateClient
     {
-        $math = new Math();
-        return match ($type) {
-            Clients::PRIVATE => new PrivateClient($math),
-            Clients::BUSINESS => new BusinessClient($math),
-            default => throw new \Exception('Client is not valid'),
+        return match ($this->operation->userType) {
+            Clients::PRIVATE => new PrivateClient($this->math, $this->operation, $this->userWithdrawOperationsHistory),
+            Clients::BUSINESS => new BusinessClient($this->math),
+            default => throw new Exception('Client is not valid'),
         };
     }
 
+    /**
+     * @throws Exception
+     */
     public function calculateCommissionFee(string $amount): string
     {
-        return $this->getClientTye()->calculateCommissionFee();
+        return ($this->getClientType())->calculateCommissionFee($this->operation->amount);
     }
 }

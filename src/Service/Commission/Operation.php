@@ -9,6 +9,7 @@ use CommissionTask\Service\Commission\Clients\PrivateClient;
 use CommissionTask\Service\Commission\Enum\Clients;
 use CommissionTask\Service\DataAdapter\Traits\HttpAdapter;
 use CommissionTask\Service\Math;
+use Exception;
 
 class Operation
 {
@@ -78,6 +79,7 @@ class Operation
 
     /**
      * @throws OperationIsNotValidException
+     * @throws Exception
      */
     public function calculate()
     {
@@ -89,11 +91,13 @@ class Operation
         if($operationType === self::DEPOSIT) {
             $value = (new Deposit(new Math(self::SCALE)))->calculateCommissionFee($this->amount);
         }else {
-            if($this->userType === Clients::BUSINESS) {
-                $value = (new BusinessClient(new Math(self::SCALE)))->calculateCommissionFee($this->amount);
-            }else {
-                $value = (new PrivateClient(new Math(self::SCALE), $this , self::$userWithDrawOperationsHistory[$this->userId]))->calculateCommissionFee($this->amount);
-            }
+            $value = (
+                new Withdraw(
+                    new Math(self::SCALE),
+                    $this,
+                    self::$userWithDrawOperationsHistory[$this->userId]
+                )
+            )->calculateCommissionFee($this->amount);
         }
 
         echo number_format((float)$value, self::SCALE) . "\n";
