@@ -5,7 +5,6 @@ declare(strict_types=1);
 require ('vendor/autoload.php');
 
 use CommissionTask\Exceptions\CsvFileNotExistException;
-use CommissionTask\Exceptions\CurrencyIsNotValidException;
 use CommissionTask\Exceptions\OperationIsNotValidException;
 use CommissionTask\Service\Commission\Operation;
 use CommissionTask\Service\CSVReader;
@@ -19,7 +18,6 @@ class App {
     /**
      * @throws CsvFileNotExistException
      * @throws OperationIsNotValidException
-     * @throws CurrencyIsNotValidException
      */
     public function run(): void
     {
@@ -36,7 +34,6 @@ class App {
      * @return void
      *
      * @throws CsvFileNotExistException
-     * @throws CurrencyIsNotValidException
      * @throws OperationIsNotValidException
      */
     private function readCsv(): void

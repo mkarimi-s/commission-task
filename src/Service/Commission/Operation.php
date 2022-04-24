@@ -2,11 +2,7 @@
 
 namespace CommissionTask\Service\Commission;
 
-use CommissionTask\Exceptions\CurrencyIsNotValidException;
 use CommissionTask\Exceptions\OperationIsNotValidException;
-use CommissionTask\Service\Commission\Clients\BusinessClient;
-use CommissionTask\Service\Commission\Clients\PrivateClient;
-use CommissionTask\Service\Commission\Enum\Clients;
 use CommissionTask\Service\DataAdapter\Traits\HttpAdapter;
 use CommissionTask\Service\Math;
 use Exception;
@@ -114,4 +110,4 @@ class Operation
         }
         return $depositOrWithdrawObject;
     }
-}gl
+}
