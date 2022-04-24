@@ -78,7 +78,6 @@ class Operation
 
     /**
      * @throws OperationIsNotValidException
-     * @throws CurrencyIsNotValidException
      */
     public function calculate()
     {
